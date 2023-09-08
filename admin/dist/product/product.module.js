@@ -12,12 +12,28 @@ const product_controller_1 = require("./product.controller");
 const typeorm_1 = require("@nestjs/typeorm");
 const product_entity_1 = require("./product.entity");
 const product_service_1 = require("./product.service");
+const microservices_1 = require("@nestjs/microservices");
 let ProductModule = class ProductModule {
 };
 exports.ProductModule = ProductModule;
 exports.ProductModule = ProductModule = __decorate([
     (0, common_1.Module)({
-        imports: [typeorm_1.TypeOrmModule.forFeature([product_entity_1.Product])],
+        imports: [
+            typeorm_1.TypeOrmModule.forFeature([product_entity_1.Product]),
+            microservices_1.ClientsModule.register([
+                {
+                    name: 'PRODUCT_SERVICE',
+                    transport: microservices_1.Transport.RMQ,
+                    options: {
+                        urls: ['amqp://localhost:5672'],
+                        queue: 'main_queue',
+                        queueOptions: {
+                            durable: false,
+                        },
+                    },
+                },
+            ]),
+        ],
         controllers: [product_controller_1.ProductController],
         providers: [product_service_1.ProductService],
     })

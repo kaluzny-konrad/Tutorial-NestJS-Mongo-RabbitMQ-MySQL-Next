@@ -3,16 +3,20 @@ import {
   Controller,
   Delete,
   Get,
+  Inject,
   Param,
   Post,
   Put,
 } from '@nestjs/common';
 import { ProductService } from './product.service';
 import { ApiBody, ApiParam } from '@nestjs/swagger';
+import { ClientProxy } from '@nestjs/microservices';
 
 @Controller('products')
 export class ProductController {
-  constructor(private readonly productService: ProductService) {}
+  constructor(private readonly productService: ProductService,
+      @Inject('PRODUCT_SERVICE') private readonly client: ClientProxy
+    ) {}
 
   @Get()
   all() {
