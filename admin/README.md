@@ -9,3 +9,5 @@
 1. `nest g service product`
 1. `npm install --save @nestjs/swagger`
 1. init swagger in repo
+1. `npm i --save @nestjs/microservices`
+1. `npm i --save amqplib amqp-connection-manager`
