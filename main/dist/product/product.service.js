@@ -24,6 +24,18 @@ let ProductService = class ProductService {
     async all() {
         return this.productModel.find().exec();
     }
+    async create(data) {
+        return this.productModel.create(data);
+    }
+    async get(id) {
+        return this.productModel.findById(id).exec();
+    }
+    async update(id, data) {
+        return this.productModel.findOneAndUpdate({ id }, data).exec();
+    }
+    async delete(id) {
+        return this.productModel.deleteOne({ id }).exec();
+    }
 };
 exports.ProductService = ProductService;
 exports.ProductService = ProductService = __decorate([

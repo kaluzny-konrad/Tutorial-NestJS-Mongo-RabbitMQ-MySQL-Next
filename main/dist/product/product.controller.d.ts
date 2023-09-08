@@ -30,4 +30,7 @@ export declare class ProductController {
     all(): Promise<(import("mongoose").Document<unknown, {}, import("./product.model").ProductDocument> & import("./product.model").Product & import("mongoose").Document<any, any, any> & {
         _id: import("mongoose").Types.ObjectId;
     })[]>;
+    productCreated(data: any): Promise<import("./product.model").Product>;
+    productUpdated(data: any): Promise<any>;
+    productDeleted(id: number): Promise<any>;
 }

@@ -13,4 +13,20 @@ export class ProductService {
   async all() {
     return this.productModel.find().exec();
   }
+
+  async create(data: any): Promise<Product> {
+    return this.productModel.create(data);
+  }
+
+  async get(id: string): Promise<Product> {
+    return this.productModel.findById(id).exec();
+  }
+
+  async update(id: number, data: any): Promise<any> {
+    return this.productModel.findOneAndUpdate({ id }, data).exec();
+  }
+
+  async delete(id: number): Promise<any> {
+    return this.productModel.deleteOne({ id }).exec();
+  }
 }

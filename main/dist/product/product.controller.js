@@ -12,12 +12,22 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ProductController = void 0;
 const common_1 = require("@nestjs/common");
 const product_service_1 = require("./product.service");
+const microservices_1 = require("@nestjs/microservices");
 let ProductController = class ProductController {
     constructor(productService) {
         this.productService = productService;
     }
     async all() {
         return this.productService.all();
+    }
+    async productCreated(data) {
+        return this.productService.create(data);
+    }
+    async productUpdated(data) {
+        return this.productService.update(data.id, data);
+    }
+    async productDeleted(id) {
+        return this.productService.delete(id);
     }
 };
 exports.ProductController = ProductController;
@@ -27,6 +37,24 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], ProductController.prototype, "all", null);
+__decorate([
+    (0, microservices_1.EventPattern)('product_created'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], ProductController.prototype, "productCreated", null);
+__decorate([
+    (0, microservices_1.EventPattern)('product_updated'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], ProductController.prototype, "productUpdated", null);
+__decorate([
+    (0, microservices_1.EventPattern)('product_deleted'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number]),
+    __metadata("design:returntype", Promise)
+], ProductController.prototype, "productDeleted", null);
 exports.ProductController = ProductController = __decorate([
     (0, common_1.Controller)('products'),
     __metadata("design:paramtypes", [product_service_1.ProductService])

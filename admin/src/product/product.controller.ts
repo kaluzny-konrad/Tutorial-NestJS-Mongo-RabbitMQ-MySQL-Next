@@ -14,9 +14,10 @@ import { ClientProxy } from '@nestjs/microservices';
 
 @Controller('products')
 export class ProductController {
-  constructor(private readonly productService: ProductService,
-      @Inject('PRODUCT_SERVICE') private readonly client: ClientProxy
-    ) {}
+  constructor(
+    private readonly productService: ProductService,
+    @Inject('PRODUCT_SERVICE') private readonly client: ClientProxy,
+  ) {}
 
   @Get()
   all() {
@@ -32,8 +33,10 @@ export class ProductController {
       },
     },
   })
-  create(@Body('title') title: string, @Body('image') image: string) {
-    return this.productService.create({ title, image });
+  async create(@Body('title') title: string, @Body('image') image: string) {
+    const product = await this.productService.create({ title, image });
+    this.client.emit('product_created', product);
+    return product;
   }
 
   @Get(':id')
@@ -68,7 +71,9 @@ export class ProductController {
     @Body('image') image: string,
   ) {
     await this.productService.update(id, { title, image });
-    return this.productService.get(id);
+    const product = await this.productService.get(id);
+    this.client.emit('product_updated', product);
+    return product;
   }
 
   @Delete(':id')
@@ -79,6 +84,22 @@ export class ProductController {
     },
   })
   async delete(@Param('id') id: number) {
-    return this.productService.delete(id);
+    await this.productService.delete(id);
+    this.client.emit('product_deleted', id);
+    return id;
+  }
+
+  @Post(':id/like')
+  @ApiParam({
+    name: 'id',
+    schema: {
+      example: 1,
+    },
+  })
+  async like(@Param('id') id: number) {
+    const product = await this.productService.get(id);
+    await this.productService.update(id, { likes: product.likes + 1 });
+    this.client.emit('product_liked', id);
+    return product;
   }
 }

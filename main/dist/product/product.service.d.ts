@@ -30,4 +30,8 @@ export declare class ProductService {
     all(): Promise<(import("mongoose").Document<unknown, {}, ProductDocument> & Product & import("mongoose").Document<any, any, any> & {
         _id: import("mongoose").Types.ObjectId;
     })[]>;
+    create(data: any): Promise<Product>;
+    get(id: string): Promise<Product>;
+    update(id: number, data: any): Promise<any>;
+    delete(id: number): Promise<any>;
 }

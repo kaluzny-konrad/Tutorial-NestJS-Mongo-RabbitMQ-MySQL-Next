@@ -25,18 +25,30 @@ let ProductController = class ProductController {
     all() {
         return this.productService.all();
     }
-    create(title, image) {
-        return this.productService.create({ title, image });
+    async create(title, image) {
+        const product = await this.productService.create({ title, image });
+        this.client.emit('product_created', product);
+        return product;
     }
     async get(id) {
         return this.productService.get(id);
     }
     async update(id, title, image) {
         await this.productService.update(id, { title, image });
-        return this.productService.get(id);
+        const product = await this.productService.get(id);
+        this.client.emit('product_updated', product);
+        return product;
     }
     async delete(id) {
-        return this.productService.delete(id);
+        await this.productService.delete(id);
+        this.client.emit('product_deleted', id);
+        return id;
+    }
+    async like(id) {
+        const product = await this.productService.get(id);
+        await this.productService.update(id, { likes: product.likes + 1 });
+        this.client.emit('product_liked', id);
+        return product;
     }
 };
 exports.ProductController = ProductController;
@@ -60,7 +72,7 @@ __decorate([
     __param(1, (0, common_1.Body)('image')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, String]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:returntype", Promise)
 ], ProductController.prototype, "create", null);
 __decorate([
     (0, common_1.Get)(':id'),
@@ -111,6 +123,19 @@ __decorate([
     __metadata("design:paramtypes", [Number]),
     __metadata("design:returntype", Promise)
 ], ProductController.prototype, "delete", null);
+__decorate([
+    (0, common_1.Post)(':id/like'),
+    (0, swagger_1.ApiParam)({
+        name: 'id',
+        schema: {
+            example: 1,
+        },
+    }),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number]),
+    __metadata("design:returntype", Promise)
+], ProductController.prototype, "like", null);
 exports.ProductController = ProductController = __decorate([
     (0, common_1.Controller)('products'),
     __param(1, (0, common_1.Inject)('PRODUCT_SERVICE')),
