@@ -1,5 +1,7 @@
 # Install
 
+Warning: this version works only with `npm run dev`
+
 1. `npx create-next-app@latest admin-front`
 1. `copy package json` and `npm i`
 1. `npx prisma init`
