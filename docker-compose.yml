@@ -48,6 +48,19 @@ services:
       - 5672:5672
       - 15672:15672
 
+  app-admin:
+    build:
+      context: ./admin
+    links:
+      - db
+      - mongo
+      - rabbitmq
+    restart: always
+    ports:
+      - 8000:8000
+    environment:
+      NODE_ENV: production
+
 volumes:
   mysql-data:
   mongo-data:
