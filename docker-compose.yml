@@ -21,6 +21,10 @@ services:
     restart: always
     ports:
       - 8080:8080
+    depends_on:
+      - db
+    links:
+      - db
 
   mongo:
     image: mongo
@@ -32,6 +36,8 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: example
     volumes:
       - 'mongo-data:/data/db'
+    networks:
+      - backend
 
   mongo-express:
     image: mongo-express
@@ -49,6 +55,8 @@ services:
     ports:
       - 5672:5672
       - 15672:15672
+    networks:
+      - backend
 
   app-admin:
     build:
@@ -69,11 +77,61 @@ services:
       MYSQL_USER: "root"
       MYSQL_PASSWORD: "root"
       MYSQL_DATABASE: "nest_admin"
+      RABBITMQ_HOST: "rabbitmq"
+      RABBITMQ_PORT: 5672
     expose:
       - 8000
     networks:
       - backend
       - frontend
+
+  app-main:
+    build:
+      context: ./main
+      dockerfile: Dockerfile.main
+    links:
+      - "mongo:mongo"
+      - "app-admin:app-admin"
+    depends_on:
+      - mongo
+      - app-main-listener
+      - app-admin
+    restart: always
+    ports:
+      - 8001:8001
+    environment:
+      NODE_ENV: production
+      MONGO_HOST: "mongo"
+      MONGO_PORT: 27017
+      ADMIN_HOST: "app-admin"
+      ADMIN_PORT: 8000
+    expose:
+      - 8001
+    networks:
+      - backend
+      - frontend
+  
+  app-main-listener:
+    build:
+      context: ./main
+      dockerfile: Dockerfile.listener
+    links:
+      - "mongo:mongo"
+      - "rabbitmq:rabbitmq"
+      - "app-admin:app-admin"
+    depends_on:
+      - mongo
+      - rabbitmq
+      - app-admin
+    restart: always
+    environment:
+      NODE_ENV: production
+      MONGO_HOST: "mongo"
+      MONGO_PORT: 27017
+      RABBITMQ_HOST: "rabbitmq"
+      RABBITMQ_PORT: 5672
+    networks:
+      - backend
 
 volumes:
   mysql-data:

@@ -39,7 +39,7 @@ let ProductController = class ProductController {
         const product = await this.productService.findOne(id);
         product.likes += 1;
         this.httpService
-            .post(`http://localhost:8000/api/products/${id}/like`, {
+            .post(`http://${process.env.ADMIN_HOST}:${process.env.ADMIN_PORT}/api/products/${id}/like`, {
             id,
         })
             .subscribe();

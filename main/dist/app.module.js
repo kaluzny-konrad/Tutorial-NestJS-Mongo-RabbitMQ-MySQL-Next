@@ -12,14 +12,19 @@ const mongoose_1 = require("@nestjs/mongoose");
 const app_controller_1 = require("./app.controller");
 const app_service_1 = require("./app.service");
 const product_module_1 = require("./product/product.module");
+const config_1 = require("@nestjs/config");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
-        imports: [mongoose_1.MongooseModule.forRoot('mongodb://root:example@localhost:27017/?authMechanism=DEFAULT', {
-                autoCreate: true
-            }), product_module_1.ProductModule],
+        imports: [
+            config_1.ConfigModule.forRoot(),
+            mongoose_1.MongooseModule.forRoot(`mongodb://root:example@${process.env.MONGO_HOST}:${process.env.MONGO_PORT}/?authMechanism=DEFAULT`, {
+                autoCreate: true,
+            }),
+            product_module_1.ProductModule,
+        ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],
     })

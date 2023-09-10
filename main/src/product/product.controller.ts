@@ -43,9 +43,12 @@ export class ProductController {
     product.likes += 1;
 
     this.httpService
-      .post(`http://localhost:8000/api/products/${id}/like`, {
-        id,
-      })
+      .post(
+        `http://${process.env.ADMIN_HOST}:${process.env.ADMIN_PORT}/api/products/${id}/like`,
+        {
+          id,
+        },
+      )
       .subscribe();
 
     await this.productService.update(id, { likes: product.likes });

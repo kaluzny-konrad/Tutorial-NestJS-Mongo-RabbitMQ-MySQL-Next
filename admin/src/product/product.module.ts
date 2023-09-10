@@ -4,16 +4,18 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Product } from './product.entity';
 import { ProductService } from './product.service';
 import { ClientsModule, Transport } from '@nestjs/microservices';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
+    ConfigModule.forRoot(),
     TypeOrmModule.forFeature([Product]),
     ClientsModule.register([
       {
         name: 'PRODUCT_SERVICE',
         transport: Transport.RMQ,
         options: {
-          urls: ['amqp://localhost:5672'],
+          urls: [`amqp://${process.env.RABBITMQ_HOST}:${process.env.RABBITMQ_PORT}`],
           queue: 'main_queue',
           queueOptions: {
             durable: false,
