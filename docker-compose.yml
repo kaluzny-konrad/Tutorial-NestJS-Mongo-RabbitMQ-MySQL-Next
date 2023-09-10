@@ -85,24 +85,24 @@ services:
       - backend
       - frontend
   
-  app-admin-frontend:
-    build:
-      context: ./admin-front
-    links:
-      - "app-admin:app-admin"
-    depends_on:
-      - app-admin
-    restart: always
-    ports:
-      - 3000:3000
-    environment:
-      NODE_ENV: production
-      API_HOST: "app-admin"
-      API_PORT: 8000
-    expose:
-      - 3000
-    networks:
-      - frontend
+  # app-admin-frontend:
+  #   build:
+  #     context: ./admin-front
+  #   links:
+  #     - "app-admin:app-admin"
+  #   depends_on:
+  #     - app-admin
+  #   restart: always
+  #   ports:
+  #     - 3000:3000
+  #   environment:
+  #     NODE_ENV: production
+  #     API_HOST: "app-admin"
+  #     API_PORT: 8000
+  #   expose:
+  #     - 3000
+  #   networks:
+  #     - frontend
 
   app-main:
     build:
