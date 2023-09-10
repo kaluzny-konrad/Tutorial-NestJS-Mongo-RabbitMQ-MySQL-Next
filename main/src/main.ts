@@ -9,8 +9,8 @@ async function bootstrap() {
     origin: 'http://localhost:4200',
   });
   const config = new DocumentBuilder()
-    .setTitle('Nest Admin')
-    .setDescription('Admin API description')
+    .setTitle('Nest Main')
+    .setDescription('Main API description')
     .setVersion('1.0')
     .build();
   const document = SwaggerModule.createDocument(app, config);

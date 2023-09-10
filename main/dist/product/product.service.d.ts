@@ -31,7 +31,7 @@ export declare class ProductService {
         _id: import("mongoose").Types.ObjectId;
     })[]>;
     create(data: any): Promise<Product>;
-    get(id: string): Promise<Product>;
-    update(id: number, data: any): Promise<any>;
+    findOne(id: number): Promise<Product>;
+    update(id: number, data: any): Promise<Product>;
     delete(id: number): Promise<any>;
 }

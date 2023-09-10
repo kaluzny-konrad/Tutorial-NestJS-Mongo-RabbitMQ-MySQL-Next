@@ -12,14 +12,18 @@ const product_controller_1 = require("./product.controller");
 const product_service_1 = require("./product.service");
 const mongoose_1 = require("@nestjs/mongoose");
 const product_model_1 = require("./product.model");
+const axios_1 = require("@nestjs/axios");
 let ProductModule = class ProductModule {
 };
 exports.ProductModule = ProductModule;
 exports.ProductModule = ProductModule = __decorate([
     (0, common_1.Module)({
-        imports: [mongoose_1.MongooseModule.forFeature([{ name: product_model_1.Product.name, schema: product_model_1.ProductSchema }])],
+        imports: [
+            mongoose_1.MongooseModule.forFeature([{ name: product_model_1.Product.name, schema: product_model_1.ProductSchema }]),
+            axios_1.HttpModule,
+        ],
         controllers: [product_controller_1.ProductController],
-        providers: [product_service_1.ProductService]
+        providers: [product_service_1.ProductService],
     })
 ], ProductModule);
 //# sourceMappingURL=product.module.js.map

@@ -27,8 +27,8 @@ let ProductService = class ProductService {
     async create(data) {
         return this.productModel.create(data);
     }
-    async get(id) {
-        return this.productModel.findById(id).exec();
+    async findOne(id) {
+        return this.productModel.findOne({ id }).exec();
     }
     async update(id, data) {
         return this.productModel.findOneAndUpdate({ id }, data).exec();

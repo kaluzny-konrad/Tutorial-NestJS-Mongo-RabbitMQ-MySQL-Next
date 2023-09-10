@@ -28,7 +28,7 @@ export declare class Product {
     id: number;
     title: string;
     image: string;
-    likes: string;
+    likes: number;
 }
 export declare const ProductSchema: import("mongoose").Schema<Product, import("mongoose").Model<Product, any, any, any, Document<unknown, any, Product> & Product & {
     _id: import("mongoose").Types.ObjectId;

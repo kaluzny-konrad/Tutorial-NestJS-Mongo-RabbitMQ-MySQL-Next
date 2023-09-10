@@ -47,7 +47,6 @@ let ProductController = class ProductController {
     async like(id) {
         const product = await this.productService.get(id);
         await this.productService.update(id, { likes: product.likes + 1 });
-        this.client.emit('product_liked', id);
         return product;
     }
 };

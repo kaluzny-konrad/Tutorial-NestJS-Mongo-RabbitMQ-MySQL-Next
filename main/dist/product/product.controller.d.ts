@@ -24,13 +24,16 @@
 /// <reference types="mongoose" />
 /// <reference types="mongoose/types/inferschematype" />
 import { ProductService } from './product.service';
+import { HttpService } from '@nestjs/axios';
 export declare class ProductController {
-    private productService;
-    constructor(productService: ProductService);
+    private readonly productService;
+    private readonly httpService;
+    constructor(productService: ProductService, httpService: HttpService);
     all(): Promise<(import("mongoose").Document<unknown, {}, import("./product.model").ProductDocument> & import("./product.model").Product & import("mongoose").Document<any, any, any> & {
         _id: import("mongoose").Types.ObjectId;
     })[]>;
     productCreated(data: any): Promise<import("./product.model").Product>;
-    productUpdated(data: any): Promise<any>;
+    productUpdated(data: any): Promise<import("./product.model").Product>;
     productDeleted(id: number): Promise<any>;
+    like(id: number): Promise<import("./product.model").Product>;
 }

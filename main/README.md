@@ -9,3 +9,4 @@
 1. `nest g co product`
 1. `npm i --save @nestjs/microservices`
 1. `npm i --save amqplib amqp-connection-manager`
+1. `npm i --save @nestjs/axios axios`
