@@ -1,7 +1,7 @@
 # Install
 
 1. `npx create-next-app@latest admin-front`
-1. `copy package json`
+1. `copy package json` and `npm i`
 1. `npx prisma init`
 1. Init Google Oauth client id
 1. Add info to .env
