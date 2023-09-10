@@ -13,6 +13,8 @@ services:
       - 3306:3306
     volumes:
       - mysql-data:/var/lib/mysql
+    networks:
+      - backend
 
   adminer:
     image: adminer
@@ -52,15 +54,27 @@ services:
     build:
       context: ./admin
     links:
+      - "db:db"
+      - "rabbitmq:rabbitmq"
+    depends_on:
       - db
-      - mongo
       - rabbitmq
     restart: always
     ports:
       - 8000:8000
     environment:
       NODE_ENV: production
+      MYSQL_HOST: "db"
+    expose:
+      - 8000
+    networks:
+      - backend
+      - frontend
 
 volumes:
   mysql-data:
   mongo-data:
+
+networks:
+  frontend:
+  backend:
